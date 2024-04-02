@@ -1,7 +1,18 @@
-import { View, Text, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Alert,
+  ScrollView,
+  Pressable,
+  TextInput,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
-import * as LocationGeocoding from "expo-location";;
+import * as LocationGeocoding from "expo-location";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import Carousel from "../../components/Carousel";
+import Categories from "../../components/Categories";
 
 const index = () => {
   const [locationEnable, setLocationEnable] = useState();
@@ -12,7 +23,7 @@ const index = () => {
   useEffect(() => {
     CheckIfLocationEnable();
     GetCurrentLocation();
-  },[]);
+  }, []);
 
   const CheckIfLocationEnable = async () => {
     let enable = await Location.hasServicesEnabledAsync();
@@ -36,15 +47,15 @@ const index = () => {
       Alert.alert(
         "Permission not granted",
         "Allow the app to use the location service",
-        [{ text: "OK" ,}],
+        [{ text: "OK" }],
         { cancelable: false }
       );
     }
 
     const location = await Location.getCurrentPositionAsync();
-    console.log( "location", location);
+
     let { coords } = await Location.getCurrentPositionAsync();
-    console.log('coords', coords)
+
     if (coords) {
       const { latitude, longitude } = coords;
 
@@ -76,12 +87,58 @@ const index = () => {
     // let location = await Location.getCurrentPositionAsync({});
     // setCurrentAddress(location);
   };
-  console.log('currentAddress', currentAddress)
 
   return (
-    <View>
-      <Text>home </Text>
-    </View>
+    <ScrollView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 10,
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        <FontAwesome6 name="location-dot" size={30} color="#E52850" />
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>Deliver To</Text>
+          <Text style={{ fontSize: 15, marginTop: 3, color: "gray" }}>
+            {currentAddress}
+          </Text>
+        </View>
+        <Pressable
+          style={{
+            width: 40,
+            height: 40,
+            backgroundColor: "#6CB4EE",
+            justifyContent: "center",
+            borderRadius: 20,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>N</Text>
+        </Pressable>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          borderWidth: 1,
+          borderRadius: 11,
+          marginTop: 10,
+          marginHorizontal: 10,
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+          borderColor: "#C0C0C0",
+        }}
+      >
+        <TextInput placeholder="Search for food,hotels" />
+        <Ionicons name="search-sharp" size={30} color="#E52850" />
+      </View>
+
+      <Carousel />
+
+      <Categories/>
+    </ScrollView>
   );
 };
 
