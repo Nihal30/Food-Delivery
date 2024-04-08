@@ -7,6 +7,7 @@ import {
   MaterialCommunityIcons,
   Feather,
 } from "@expo/vector-icons";
+import FoodItems from "../../components/FoodItems";
 
 const restaurantScreen = () => {
   const params = useLocalSearchParams();
@@ -119,6 +120,11 @@ const restaurantScreen = () => {
           </View>
         </View>
       </View>
+
+    {/* menu items */}
+    {menu?.map((item ,index) =>(
+      <FoodItems key ={index} items={item}/>
+    ))}
     </ScrollView>
   );
 };
