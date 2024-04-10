@@ -217,6 +217,13 @@ const restaurantScreen = () => {
 
       {cart?.length > 0 && (
         <Pressable
+
+        onPress={()=>router.push({
+          pathname:"/cart",
+          params:{
+            name:params.name 
+          }
+        })}
           style={{
             backgroundColor: "#fd5c63",
             paddingHorizontal: 10,
@@ -248,7 +255,7 @@ const restaurantScreen = () => {
         </Pressable>
       )}
 
-<Modal
+      <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(!modalVisible)}
       >
@@ -288,13 +295,12 @@ const restaurantScreen = () => {
             <Image
               style={{ width: 120, height: 70, resizeMode: "contain" }}
               source={{
-                uri:"https://w7.pngwing.com/pngs/587/646/png-transparent-swiggy-hd-logo.png",
+                uri: "https://w7.pngwing.com/pngs/587/646/png-transparent-swiggy-hd-logo.png",
               }}
             />
           </View>
         </View>
       </Modal>
-
     </>
   );
 };
