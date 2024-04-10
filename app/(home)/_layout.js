@@ -9,6 +9,7 @@ export default function _layout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="restaurantScreen" />
+        <Stack.Screen name='cart' />
       </Stack>
     </Provider> 
   );
