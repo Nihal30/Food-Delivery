@@ -10,6 +10,7 @@ export default function _layout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="restaurantScreen" />
         <Stack.Screen name='cart' />
+        <Stack.Screen name="order" />
       </Stack>
     </Provider> 
   );
