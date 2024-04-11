@@ -12,7 +12,7 @@ const Carousel = () => {
     <View>
        <SliderBox
         images={img}
-        autoPlay ={true}
+        autoPlay
         circleLoop
         dotColor="#13274F"
         inactiveDotColor="#90A4AE"
