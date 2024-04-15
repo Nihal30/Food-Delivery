@@ -11,27 +11,42 @@ import React, { useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-
+import { supabase } from "../../superbase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const login = () => {
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
-    const router = useRouter();
-    useEffect(() => {
-        const checkLogin = async () => {
-            try{
-                const token = await AsyncStorage.getItem("authToken");
-                if(token){
-                    router.replace("/(home)")
-                }
-            } catch(error){
-                console.log(error)
-            }
-        }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-        checkLogin();
-    },[])
- 
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+        if (token) {
+          router.replace("/(home)");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkLogin();
+  }, []);
+
+  async function signUpWithEmail() {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (data) {
+      const token = data?.session?.access_token;
+      AsyncStorage.setItem("authToken", token);
+      router.replace("/(home)");
+    }
+  }
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -121,7 +136,7 @@ const login = () => {
         </View>
 
         <Pressable
-       
+        onPress={signUpWithEmail}
           style={{
             width: 200,
             backgroundColor: "#fd5c63",
@@ -129,14 +144,28 @@ const login = () => {
             marginLeft: "auto",
             marginRight: "auto",
             padding: 15,
-            marginTop:50
+            marginTop: 50,
           }}
         >
-          <Text style={{textAlign:"center",fontWeight:"bold",fontSize:16,color:"white"}}>Login</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: 16,
+              color: "white",
+            }}
+          >
+            Login
+          </Text>
         </Pressable>
 
-        <Pressable onPress={() => router.replace("/register")} style={{marginTop:15}}>
-            <Text style={{textAlign:"center",color:"gray",fontSize:16}}>Don't have an Account? Sign Up</Text>
+        <Pressable
+          onPress={() => router.replace("/register")}
+          style={{ marginTop: 15 }}
+        >
+          <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
+            Don't have an Account? Sign Up
+          </Text>
         </Pressable>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -12,14 +12,35 @@ import React, { useState } from "react";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-
+import { supabase } from "../../superbase";
 
 const register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
- 
+
+  const signUpNewUser = async () => {
+    const { data, error } = await supabase.auth.signUp({
+      name: name,
+      email: email,
+      password: password,
+    });
+    console.log('data', data)
+    console.log('error', error)
+
+    if (data?.user?.role == "auth") {
+      Alert.alert(
+        "You have been successfully registered ",
+        "please check your email for confirmation"
+      );
+    }
+
+    if(error){
+      Alert.alert("Error while registering ","please try again")
+    }
+  };
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -121,7 +142,7 @@ const register = () => {
         </View>
 
         <Pressable
-          
+          onPress={signUpNewUser}
           style={{
             width: 200,
             backgroundColor: "#fd5c63",
